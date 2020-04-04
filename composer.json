@@ -15,7 +15,7 @@
     }
   },
   "require": {
-    "php": ">=7.3.0",
+    "php": ">=7.0.0",
     "ingelby/toolbox": "dev-master"
   },
   "require-dev": {

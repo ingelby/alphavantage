@@ -67,4 +67,21 @@ class SearchMatch extends Model
             ],
         ];
     }
+
+
+    /**
+     * @return string
+     */
+    public function getMarketOpen(): string
+    {
+        return $this->marketOpen . ' ' . $this->timezone;
+    }
+
+    /**
+     * @return string
+     */
+    public function getFriendlyName(): string
+    {
+        return $this->name . ' (' . $this->symbol . ' - ' . $this->region . ')';
+    }
 }

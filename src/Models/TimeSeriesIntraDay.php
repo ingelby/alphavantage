@@ -32,4 +32,13 @@ class TimeSeriesIntraDay extends TimeSeries
             ]
         );
     }
+
+    /**
+     * @param string $format
+     * @return string
+     */
+    public function getDateInFormat(string $format): string
+    {
+        return $this->dateTime->format($format);
+    }
 }

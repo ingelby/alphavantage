@@ -32,4 +32,13 @@ class TimeSeriesDay extends TimeSeries
             ]
         );
     }
+
+    /**
+     * @param string $format
+     * @return string
+     */
+    public function getDateInFormat(string $format): string
+    {
+        return $this->date->format($format);
+    }
 }

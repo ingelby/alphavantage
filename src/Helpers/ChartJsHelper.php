@@ -10,11 +10,22 @@ class ChartJsHelper
 {
 
     /**
-     * @param TimeSeries[] $timeSeries
-     * @return [][];
+     * @param array  $timeSeries
+     * @param float  $openingValue
+     * @param string $dateFormat
+     * @param bool   $reverseValues
+     * @return [][]
      */
-    public static function mapTimeSeriesPercent(array $timeSeries, float $openingValue)
-    {
+    public static function mapTimeSeriesPercent(
+        array $timeSeries,
+        float $openingValue,
+        string $dateFormat = 'G:i:s',
+        bool $reverseValues = true
+    ) {
+        if (true === $reverseValues) {
+            $timeSeries = array_reverse($timeSeries);
+        }
+
         $mappedValues = [
             'labels' => [],
             'data'   => [],
@@ -22,9 +33,32 @@ class ChartJsHelper
         foreach ($timeSeries as $series) {
             $value = round($series->open - $openingValue, 3);
             $mappedValues['data'][] = $value;
-            $mappedValues['labels'][] = $value;
+            $mappedValues['labels'][] = $series->getDateInFormat($dateFormat) . ' - ' . $value;
         }
-        return array_reverse($mappedValues);
+        return $mappedValues;
+    }
+
+    /**
+     * @param array  $timeSeries
+     * @param string $dateFormat
+     * @param bool   $reverseValues
+     * @return [][]
+     */
+    public static function mapTimeSeries(array $timeSeries, string $dateFormat = 'jS F Y', bool $reverseValues = true)
+    {
+        if (true === $reverseValues) {
+            $timeSeries = array_reverse($timeSeries);
+        }
+
+        $mappedValues = [
+            'labels' => [],
+            'data'   => [],
+        ];
+        foreach ($timeSeries as $series) {
+            $mappedValues['data'][] = $series->open;
+            $mappedValues['labels'][] = $series->getDateInFormat($dateFormat) . ' - ' . $series->open;
+        }
+        return $mappedValues;
     }
 
 }

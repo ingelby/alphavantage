@@ -127,7 +127,7 @@ class SeriesHandler extends AbstractHandler
     /**
      * @param string $symbol
      * @param int    $maxPoints
-     * @return TimeSeriesIntraDay[]
+     * @return TimeSeriesDay[]
      * @throws AlphavantageResponseException
      * @throws AlphavantageRateLimitException
      */
@@ -136,8 +136,7 @@ class SeriesHandler extends AbstractHandler
         $response = $this->query(
             static::TIME_SERIES_DAILY,
             [
-                'symbol'   => $symbol,
-                'interval' => $interval,
+                'symbol' => $symbol,
             ]
         );
 
@@ -155,23 +154,24 @@ class SeriesHandler extends AbstractHandler
         $points = 0;
 
         foreach ($response as $date => $value) {
-            if (null !== $maxPoints && $maxPoints >= $points++) {
+            if (null !== $maxPoints && $points++ >= $maxPoints) {
                 break;
             }
             $seriesDateTime = Carbon::parse($date);
 
             $timeseries[$date] = new TimeSeriesDay(
                 [
-                    'dateTime' => $seriesDateTime,
+                    'date'     => $seriesDateTime,
                     'timezome' => $timezone,
-                    'open'     => $response['1. open'] ?? 0,
-                    'high'     => $response['2. high'] ?? 0,
-                    'low'      => $response['3. low'] ?? 0,
-                    'close'    => $response['4. close'] ?? 0,
-                    'volume'   => $response['5. volume'] ?? 0,
+                    'open'     => $value['1. open'] ?? 0,
+                    'high'     => $value['2. high'] ?? 0,
+                    'low'      => $value['3. low'] ?? 0,
+                    'close'    => $value['4. close'] ?? 0,
+                    'volume'   => $value['5. volume'] ?? 0,
                 ]
             );
         }
+
 
         return $timeseries;
     }

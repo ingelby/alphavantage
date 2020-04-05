@@ -63,4 +63,10 @@ abstract class TimeSeries extends Model
             ],
         ];
     }
+
+    /**
+     * @param string $format
+     * @return string
+     */
+    abstract public function getDateInFormat(string $format): string;
 }
